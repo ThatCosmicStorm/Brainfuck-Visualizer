@@ -3,9 +3,9 @@
 
 import sys
 from typing import List, Dict
+from time import sleep
 from readchar import readchar
 from tabulate import tabulate
-from time import sleep
 
 COMMANDS = {
     "+", "-",
@@ -32,8 +32,11 @@ class Brainfuck:
         self.dp = 0
         self.ip: int = 0
 
-        self.words: List[str] = []
         self.output = False
+        self.words: List[str] = []
+
+        self.cells: List[str] = []
+        self.values: List[str] = []
 
     def get_loop_positions(self):
         for pos, cmd in enumerate(self.code):
@@ -73,10 +76,10 @@ class Brainfuck:
         self.ip += 1
 
     def update_table(self):
-        self.cells = [str(i) for i in self.array.keys()]
+        self.cells = [str(cell) for cell in self.array]
         self.values = [
-            [str(i) for i in self.array.values()],
-            [ascii(chr(i)) for i in self.array.values()]
+            [str(num) for num in self.array.values()],
+            [ascii(chr(char)) for char in self.array.values()]
         ]
 
         self.cells[self.dp] = f"[ {self.cells[self.dp]} ]"
@@ -99,8 +102,8 @@ class Brainfuck:
 
         print("\n" + "Output:" + "\n")
 
-        for i, char in enumerate(self.words):
-            sys.stdout.write(char)
+        for word in enumerate(self.words):
+            sys.stdout.write(word[1])
 
 
 def main():
