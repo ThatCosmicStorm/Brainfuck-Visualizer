@@ -21,7 +21,9 @@ def clear_screen():
 
 class Brainfuck:
 
-    def __init__(self):
+    def __init__(self, code: str):
+        self.code = code
+
         self.stack: List[int] = []
         self.bracemap: Dict[int, int] = {}
         self.start = 0
@@ -33,8 +35,8 @@ class Brainfuck:
         self.words: List[str] = []
         self.output = False
 
-    def get_loop_positions(self, code: str):
-        for pos, cmd in enumerate(code):
+    def get_loop_positions(self):
+        for pos, cmd in enumerate(self.code):
             match cmd:
                 case "[":
                     self.stack.append(pos)
@@ -43,8 +45,8 @@ class Brainfuck:
                     self.bracemap[self.start] = pos
                     self.bracemap[pos] = self.start
 
-    def match(self, code: str):
-        match code[self.ip]:
+    def match(self):
+        match self.code[self.ip]:
             case "+":
                 self.array[self.dp] = (self.array[self.dp] + 1) % 256
             case "-":
@@ -81,10 +83,10 @@ class Brainfuck:
 
         print(tabulate(self.values, headers=self.cells, tablefmt="grid"))
 
-    def execute(self, code: str, delay: int | float = 1):
-        self.get_loop_positions(code)
+    def execute(self, delay: int | float = 1):
+        self.get_loop_positions()
 
-        while self.ip < len(code):
+        while self.ip < len(self.code):
             clear_screen()
             self.update_table()
 
@@ -93,7 +95,7 @@ class Brainfuck:
             self.output = False
 
             sleep(delay)
-            self.match(code)
+            self.match()
 
         print("\n" + "Output:" + "\n")
 
@@ -113,7 +115,7 @@ def main():
     try:
         with open(sys.argv[1], "r", encoding="utf8") as f:
             code = "".join(char for char in f.read() if char in COMMANDS)
-            Brainfuck().execute(code, delay=delay)
+            Brainfuck(code).execute(delay=delay)
     except FileNotFoundError:
         exit(f"Error: File '{sys.argv[1]}' not found")
 
