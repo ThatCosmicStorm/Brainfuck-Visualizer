@@ -58,7 +58,7 @@ class Brainfuck:
                 if self.dp > 0:
                     self.dp -= 1
                 else:
-                    exit("Error: Pointer moved left of 0")
+                    sys.exit("Error: Pointer moved left of 0")
             case "[":
                 if not self.array[self.dp]:
                     self.ip = self.bracemap[self.ip]
@@ -105,7 +105,7 @@ class Brainfuck:
 
 def main():
     if len(sys.argv) < 2:
-        exit(f"Usage: '{sys.argv[0]}' filename")
+        sys.exit(f"Usage: '{sys.argv[0]}' filename")
 
     if len(sys.argv) > 2:
         delay = float(sys.argv[2])
@@ -117,7 +117,7 @@ def main():
             code = "".join(char for char in f.read() if char in COMMANDS)
             Brainfuck(code).execute(delay=delay)
     except FileNotFoundError:
-        exit(f"Error: File '{sys.argv[1]}' not found")
+        sys.exit(f"Error: File '{sys.argv[1]}' not found")
 
 
 if __name__ == "__main__":
