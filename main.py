@@ -86,12 +86,33 @@ class Brainfuck:
 
         print(tabulate(self.values, headers=self.cells, tablefmt="grid"))
 
+    def point_to_code(self):
+        self.dummy_code: str = self.code[:]
+        self.code_lines: List[str] = []
+
+        while len(self.dummy_code) > 0:
+            self.code_lines.append(self.dummy_code[:78])
+            self.dummy_code = self.dummy_code[79:]
+
+        print("\n" + "Code:" + "\n")
+        for i, line in enumerate(self.code_lines):
+            if self.ip < (i + 1) * 79:
+                pointer = " " * (self.ip - i * 79)
+                pointer = pointer[:-1]
+                pointer += "\u2191"
+                print(line)
+                if i*79 <= self.ip <= (i+1)*79:
+                    print(pointer)
+            else:
+                print(self.code_lines[i])
+
     def execute(self, delay: int | float = 1):
         self.get_loop_positions()
 
         while self.ip < len(self.code):
             clear_screen()
             self.update_table()
+            self.point_to_code()
 
             if self.output:
                 self.words.append(chr(self.array[self.dp]))
