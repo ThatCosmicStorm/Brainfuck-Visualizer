@@ -108,8 +108,8 @@ class Brainfuck:
 
     def execute(self, delay: int | float = 1):
         self.get_loop_positions()
-
         while self.ip < len(self.code):
+            self.match()
             clear_screen()
             self.update_table()
             self.point_to_code()
@@ -117,14 +117,12 @@ class Brainfuck:
             if self.output:
                 self.words.append(chr(self.array[self.dp]))
             self.output = False
+            print("\n" + "Output:" + "\n")
+            for word in self.words:
+                sys.stdout.write(word)
+            sys.stdout.flush()
 
             sleep(delay)
-            self.match()
-
-        print("\n" + "Output:" + "\n")
-
-        for word in enumerate(self.words):
-            sys.stdout.write(word[1])
 
 
 def main():
