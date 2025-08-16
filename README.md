@@ -27,12 +27,12 @@ pip install -r requirements.txt
 python main.py <filename> [delay]
 ```
 
-### Parameters:
+### Parameters
 
 - `filename`: Path to the Brainfuck source code file
 - `delay` (optional): Delay between instructions in seconds (default: 1)
 
-### Example:
+### Example
 
 ```bash
 python main.py helloworld.b 0.5
